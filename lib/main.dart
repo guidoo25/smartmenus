@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:smartmenu/firebase_options.dart';
 import 'package:smartmenu/helpers/notifacion_services.dart';
 import 'package:smartmenu/providers/cubit/qr_cubit_cubit.dart';
@@ -28,18 +29,30 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   }
 }
 
+Future<void> _requestCameraPermission() async {
+  final status = await Permission.camera.request();
+  if (status.isGranted) {
+    print('Camera permission granted');
+  } else if (status.isDenied) {
+    print('Camera permission denied');
+  } else if (status.isPermanentlyDenied) {
+    print('Camera permission permanently denied');
+    await openAppSettings();
+  }
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  // Registra el manejador de mensajes en segundo plano
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 
   final notificationUrlCubit = NotificationUrlCubit();
   final notificationServices = NotificationServices(notificationUrlCubit);
   await notificationServices.initialize();
+  await _requestCameraPermission();
 
   runApp(
     MultiBlocProvider(

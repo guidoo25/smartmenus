@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smartmenu/providers/notifaciton_services/noti_provider.dart';
 
 class NotificationServices {
@@ -14,6 +15,7 @@ class NotificationServices {
     FirebaseMessaging.onMessage.listen(_handleForegroundMessage);
     FirebaseMessaging.onMessageOpenedApp.listen(_handleBackgroundMessage);
     await _handleInitialMessage();
+    await getDeviceToken();
   }
 
   void _handleForegroundMessage(RemoteMessage message) {
@@ -48,6 +50,13 @@ class NotificationServices {
   }
 
   Future<String?> getDeviceToken() async {
-    return await _firebaseMessaging.getToken();
+    print('Getting device token');
+    final token = await FirebaseMessaging.instance.getToken();
+    print('FCM Token: $token');
+
+    final prefs = await SharedPreferences.getInstance();
+    if (token != null) {
+      await prefs.setString('fcm_token', token);
+    }
   }
 }

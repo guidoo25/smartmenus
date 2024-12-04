@@ -17,9 +17,7 @@ class QRCubit extends Cubit<QRState> {
       final token = prefs.getString('fcm_token') ?? '';
 
       final qrData = QRData.fromText(qrCode, token);
-      await saveQRCode(qrData);
-
-      emit(QRLoaded(qrCodes: await getSavedQRCodes()));
+      emit(QRLoaded(qrCodes: [qrData]));
     } catch (e) {
       emit(QRError(message: 'Error al procesar el código QR: $e'));
     }
@@ -43,12 +41,5 @@ class QRCubit extends Cubit<QRState> {
   Future<void> loadSavedQRCodes() async {
     final codes = await getSavedQRCodes();
     emit(QRLoaded(qrCodes: codes));
-  }
-
-  Future<String> generateUrlWithToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    final token = prefs.getString('fcm_token') ?? '';
-    final qrData = QRData(idR: 0, m: 0, p: token);
-    return qrData.url;
   }
 }

@@ -2,28 +2,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_webview_pro/webview_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:smartmenu/models/qrmodel.dart';
 import 'package:smartmenu/providers/cubit/qr_cubit_cubit.dart';
 import 'package:smartmenu/screens/home.dart';
 import 'package:smartmenu/screens/list_qr.dart';
 import 'package:smartmenu/screens/webview.dart';
+import 'package:smartmenu/widgets/push_view.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
+Future<String> generateUrlWithToken() async {
+  final prefs = await SharedPreferences.getInstance();
+  final token = prefs.getString('fcm_token') ?? '';
+  final String qrData =
+      "https://www.subirventas.com/appRest/index.php?p=$token";
+  return qrData;
+}
+
 class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
-    final qrCubit = context.read<QRCubit>();
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
       ),
       body: FutureBuilder<String>(
-        future: qrCubit.generateUrlWithToken(),
+        future: generateUrlWithToken(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(child: CircularProgressIndicator());
@@ -92,7 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   CupertinoIcons.qrcode_viewfinder),
 
               SizedBox(height: 20),
-              _buildQRButton("Mis sitios", WebViewScreen(url: url),
+              _buildQRButton("Mis sitios", WebViewScreeNotifi(url: url),
                   CupertinoIcons.location_solid),
             ],
           ),

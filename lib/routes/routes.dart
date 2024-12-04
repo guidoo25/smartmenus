@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:smartmenu/providers/notifaciton_services/noti_provider.dart';
 import 'package:smartmenu/screens/main_menu.dart';
 import 'package:smartmenu/screens/webview.dart';
+import 'package:smartmenu/widgets/push_view.dart';
 
 GoRouter appRouter(NotificationUrlCubit notificationUrlCubit) {
   return GoRouter(
@@ -21,7 +22,7 @@ GoRouter appRouter(NotificationUrlCubit notificationUrlCubit) {
           if (url == null) {
             return const Center(child: Text('No URL provided'));
           }
-          return WebViewScreen(url: url);
+          return WebViewScreeNotifi(url: url);
         },
       ),
     ],

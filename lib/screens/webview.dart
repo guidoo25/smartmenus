@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_webview_pro/webview_flutter.dart';
-import 'package:go_router/go_router.dart';
 import 'package:lottie/lottie.dart';
 import 'package:smartmenu/screens/main_menu.dart';
 
@@ -79,7 +78,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
               IconButton(
                 icon: Icon(Icons.home),
                 onPressed: () {
-                  MaterialPageRoute(builder: (context) => LoginScreen());
+                  Navigator.pop(context);
                 },
               ),
             ],

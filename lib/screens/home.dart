@@ -33,7 +33,7 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (context) =>
-                    WebViewScreen(url: state.qrCodes.last.url),
+                    WebViewScreen(url: state.qrCodes.first.url),
               ),
             );
           }
@@ -42,12 +42,6 @@ class _QRScannerScreenState extends State<QRScannerScreen> {
           return Column(
             children: [
               Expanded(child: _buildQRView(context)),
-              if (state is QRLoaded && state.qrCodes.isNotEmpty)
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text('URL: ${state.qrCodes.last.url}',
-                      style: TextStyle(fontSize: 16)),
-                ),
             ],
           );
         },
