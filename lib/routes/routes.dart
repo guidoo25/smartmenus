@@ -16,23 +16,20 @@ GoRouter appRouter(NotificationUrlCubit notificationUrlCubit) {
       GoRoute(
         path: '/webview',
         builder: (context, state) {
-          final url =
-              state.uri.queryParameters['url'] ?? notificationUrlCubit.state;
+          final url = state.uri.queryParameters['url'] ??
+              notificationUrlCubit.state ??
+              'https://example.com';
           print('WebView route: URL is $url');
-          if (url == null) {
-            return const Center(child: Text('No URL provided'));
-          }
           return WebViewScreeNotifi(url: url);
         },
       ),
     ],
     redirect: (context, state) {
       final notificationUrl = notificationUrlCubit.state;
-      if (notificationUrl != null && state.fullPath != '/webview') {
-        // Solo redirige si la URL es válida
+      if (notificationUrl != null) {
         print('Redirecting to WebView with URL: $notificationUrl');
-        notificationUrlCubit.clearUrl(); // Limpia la URL después de redirigir
-        return '/webview?url=$notificationUrl';
+        notificationUrlCubit.clearUrl();
+        return '/webview?url=${Uri.encodeComponent(notificationUrl)}';
       }
       return null;
     },

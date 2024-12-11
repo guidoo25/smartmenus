@@ -50,7 +50,7 @@ class _WebViewScreenState extends State<WebViewScreen> {
             ),
             if (_isLoading)
               Container(
-                color: Colors.grey.withOpacity(0.5),
+                color: Colors.black.withOpacity(0.5),
                 child: Center(
                   child: Lottie.asset(
                     'assets/load.json',
@@ -62,28 +62,33 @@ class _WebViewScreenState extends State<WebViewScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        child: SafeArea(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              IconButton(
-                icon: Icon(Icons.arrow_back),
-                onPressed: () async {
-                  if (await _controller.canGoBack()) {
-                    _controller.goBack();
-                  }
-                },
-              ),
-              IconButton(
-                icon: Icon(Icons.home),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ],
+      bottomNavigationBar: Stack(
+        alignment: Alignment.center,
+        children: [
+          Container(
+            height: 60, // Altura de la barra inferior
+            color: Colors.white, // Color de la barra inferior
           ),
-        ),
+          Positioned(
+            bottom: 10, // Ajusta esta posición según sea necesario
+            child: FloatingActionButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => WebViewScreen(
+                      url:
+                          'https://www.erpsystems.cl/subirventas/appRest/home.php',
+                    ),
+                  ),
+                );
+              },
+              child: Icon(Icons.home),
+              backgroundColor: Colors.white,
+              foregroundColor: Color.fromARGB(255, 0, 26, 255),
+              elevation: 5,
+            ),
+          ),
+        ],
       ),
     );
   }

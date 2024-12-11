@@ -53,6 +53,14 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
+     signingConfigs {
+        release {
+            keyAlias 'my-key-alias'
+            keyPassword 'admin123'
+            storeFile file('my-release-key.jks')
+            storePassword 'admin123'
+        }
+    }
 
     buildTypes {
         release {
