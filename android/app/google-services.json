@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:526668543292:android:2da312bde188cc1f7f1a39",
+        "mobilesdk_app_id": "1:526668543292:android:90db059e0045ce487f1a39",
         "android_client_info": {
-          "package_name": "com.example.smartmenu"
+          "package_name": "cl.erpsystems.smartmenu"
         }
       },
       "oauth_client": [],
